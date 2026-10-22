@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c2a2d">
+<title>Velox — Premium Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0b2427;--ink:#f4fbfa;--mute:#b9d3d0;--line:rgba(255,255,255,.38);--acc:#ffb81f;--glass:linear-gradient(145deg,rgba(255,255,255,.26),rgba(14,60,62,.34));--box:#c8915a;--box2:#a8743f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 15px/1.55 Outfit,system-ui,sans-serif;overflow-x:hidden}
+button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}input{font-size:16px}
+#bg{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,#a9cdc8 0%,#6aa3a0 26%,#2f6263 54%,#0c2a2d 100%)}
+#bg svg{position:absolute;left:0;bottom:0;width:100%;height:62%}
+#bg:after{content:"";position:absolute;inset:0;background:radial-gradient(60% 30% at 20% 38%,rgba(255,255,255,.28),transparent),radial-gradient(50% 25% at 85% 55%,rgba(255,255,255,.18),transparent)}
+.glass{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 20px 50px rgba(0,25,30,.3)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+.nav{display:flex;align-items:center;gap:10px;margin:16px auto 0;max-width:1200px;width:calc(100% - 32px);padding:8px 10px 8px 18px;border-radius:99px;position:sticky;top:calc(10px + env(safe-area-inset-top,0px));z-index:30}
+.brand{font-weight:500;font-size:18px;margin-right:auto;letter-spacing:.04em}.brand b{color:var(--acc)}
+.chip{padding:8px 16px;border-radius:99px;border:1px solid var(--line);font-size:14px;transition:background .2s;white-space:nowrap}.chip:hover{background:rgba(255,255,255,.22)}.chip.on{background:#fff;color:#0c3a3c}
+.round{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.2);font-size:18px;transition:transform .2s}.round:hover{transform:scale(1.08)}
+#badge{position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;border-radius:10px;background:var(--acc);color:#3a2600;font-size:12px;font-weight:600;display:grid;place-items:center}
+.sb{flex:1;max-width:260px;padding:9px 16px;border-radius:99px;border:1px solid var(--line);background:rgba(5,25,27,.35);outline:0}.sb::placeholder{color:var(--mute)}
+.title{font:200 clamp(54px,14vw,170px)/1 Outfit;letter-spacing:.015em;margin:22px 0 0;color:#fff;text-shadow:0 0 36px rgba(255,255,255,.55);white-space:nowrap;overflow:hidden}
+.hero{border-radius:34px;padding:30px 32px;margin-top:6px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.hero h2{font:300 clamp(26px,4vw,40px)/1.1 Outfit;margin:0 0 8px}.hero p{margin:0;color:#e5f3f1;max-width:420px}
+.hero .big{font-size:84px;animation:bob 6s ease-in-out infinite;filter:drop-shadow(0 18px 20px rgba(0,25,30,.4))}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.shop{margin-top:44px;padding-bottom:130px}
+.shop h2{font:200 clamp(32px,6vw,54px)/1 Outfit;margin:0 0 16px}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:16px}
+.pc{border-radius:26px;padding:14px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
+@media(hover:hover){.pc:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(0,25,30,.45)}}
+.pic{font-size:60px;text-align:center;padding:14px 0;border-radius:18px;background:rgba(255,255,255,.12);margin-bottom:10px;filter:drop-shadow(0 10px 10px rgba(0,25,30,.3))}
+.pc h3{font:400 15px/1.25 Outfit;margin:0;min-height:38px}
+.old{color:var(--mute);text-decoration:line-through;font-size:12px}
+.price{font:500 19px Outfit;margin:0 0 10px}
+.add{margin-top:auto;padding:11px;border-radius:99px;background:#fff;color:#0c3a3c;font-weight:500;position:relative;overflow:hidden;transition:transform .15s}
+.add:active{transform:scale(.96)}.add:hover:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,184,31,.55),transparent 70%);animation:sh .8s}
+@keyframes sh{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.none{color:var(--mute);padding:20px 0}
+#scrim{position:fixed;inset:0;z-index:40;background:rgba(3,18,20,.5);opacity:0;pointer-events:none;transition:opacity .3s}#scrim.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:min(410px,calc(100% - 20px));z-index:41;border-radius:32px;display:flex;flex-direction:column;padding:20px;transform:translateX(115%);transition:transform .4s cubic-bezier(.2,.8,.2,1)}#drawer.on{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;font:400 26px Outfit}
+.items{flex:1;overflow:auto;margin:10px 0}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.2)}
+.mini{width:50px;height:44px;background:var(--box);border-radius:5px;position:relative;display:grid;place-items:center;flex:none;box-shadow:inset 0 -8px 0 var(--box2)}
+.mini:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:8px;margin-left:-4px;background:rgba(255,235,180,.7)}
+.mini span{position:relative;z-index:1;background:rgba(255,255,255,.9);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:15px}
+.row .t{flex:1;font-size:14px;line-height:1.3}.row .t b{display:block;font-weight:400;font-size:15px}.row .t small{color:var(--mute)}
+.rm{color:var(--mute);font-size:17px}
+.empty{text-align:center;color:var(--mute);padding:50px 0}
+.tot{display:flex;justify-content:space-between;font:400 22px Outfit;margin:6px 0 12px}
+.btn{width:100%;padding:15px;border-radius:99px;background:#fff;color:#0c3a3c;font-weight:500;font-size:16px;transition:transform .15s}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4}
+.ov{position:fixed;inset:0;z-index:60;background:rgba(5,25,27,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:grid;place-items:center}
+.boxw{position:relative;width:110px;height:84px;margin-top:20px}
+.body{position:absolute;inset:0;background:linear-gradient(var(--box),var(--box2));border-radius:4px 4px 8px 8px;z-index:3;box-shadow:0 20px 30px rgba(0,0,0,.3)}
+.tape{position:absolute;left:50%;margin-left:-9px;top:0;bottom:0;width:18px;background:rgba(255,235,180,.85);transform:scaleY(0);transform-origin:top;transition:transform .35s}
+.boxw.sealed .tape{transform:scaleY(1)}
+.fl{position:absolute;top:-22px;height:22px;width:50%;background:var(--box2);z-index:4;transition:transform .45s;border:1px solid rgba(0,0,0,.15)}
+.fl.l{left:0;transform-origin:bottom left;transform:rotate(-115deg)}.fl.r{right:0;transform-origin:bottom right;transform:rotate(115deg)}
+.boxw.closed .fl{transform:none;top:-3px;z-index:5;background:var(--box)}
+.it{position:absolute;left:50%;top:-14px;margin-left:-26px;font-size:52px;z-index:2;line-height:1}
+.lbl{position:absolute;bottom:8px;right:8px;font-size:10px;font-weight:600;color:#5a3a18;z-index:4;letter-spacing:2px}
+.modal{position:fixed;inset:0;z-index:70;background:rgba(3,18,20,.55);display:grid;place-items:center;padding:14px;animation:fd .3s}
+@keyframes fd{from{opacity:0}}
+.pay{border-radius:32px;width:min(450px,100%);max-height:100%;overflow:auto;padding:26px}
+.pay h2{font:300 30px/1.1 Outfit;margin:0 0 14px}
+.sum{background:rgba(5,25,27,.4);border-radius:20px;padding:12px 16px;font-size:14px;margin-bottom:14px}
+.sum div{display:flex;justify-content:space-between;padding:2px 0}
+.m{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:20px;padding:13px 16px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.m.sel{border-color:#fff;background:rgba(255,255,255,.2)}
+.fld{display:grid;gap:8px;margin:10px 0 14px}
+.fld input{padding:12px 16px;border:1px solid var(--line);border-radius:99px;background:rgba(5,25,27,.4);width:100%;outline:0}
+.fld input::placeholder{color:var(--mute)}
+.ok{text-align:center;padding:30px 26px}.ok .bg2{font-size:64px}
+.note{font-size:12px;color:var(--mute);margin-top:10px;text-align:center}
+.dk{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(430px,calc(100% - 24px));z-index:35;border-radius:99px;padding:7px;display:flex;gap:4px}
+.dk button{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;border-radius:99px;font-size:11px;font-weight:400;color:var(--ink);transition:background .25s,color .25s,transform .15s}
+.dk button:active{transform:scale(.94)}
+.dk button.on{background:#fff;color:#0c3a3c}
+.dk svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.dk #badge{top:2px;right:calc(50% - 26px)}
+#topDrawer{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;width:min(640px,calc(100% - 20px));z-index:41;border-radius:32px;padding:20px 22px 24px;transform:translate(-50%,-130%);opacity:0;pointer-events:none;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .3s}
+#topDrawer.on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.tdn{color:var(--mute);margin:10px 0 0}.cats{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}.cats .chip{font-size:15px;padding:10px 18px}
+.catl{max-height:min(64vh,540px);overflow:auto;margin-top:6px;-webkit-overflow-scrolling:touch}
+.catr{display:flex;align-items:center;gap:16px;width:100%;text-align:left;padding:10px 6px;font-size:18px;font-weight:300;border-bottom:1px solid rgba(255,255,255,.22);transition:background .2s;border-radius:14px}
+.catr:hover,.catr.on{background:rgba(255,255,255,.18)}
+.catr:last-child{border-bottom:0}
+.ci{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;font-size:24px;flex:none;box-shadow:0 6px 14px rgba(0,25,30,.3)}
+.round svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pic{position:relative}
+.hb{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.22);border:1px solid var(--line);font-size:19px;line-height:1;display:grid;place-items:center;color:#fff;transition:transform .2s,background .2s}
+.hb.on{background:#fff;color:#e8265a}.hb:active{transform:scale(1.25)}
+.mg{background:rgba(5,25,27,.4);border-radius:22px;margin:0 0 12px;overflow:hidden}
+.mr{display:flex;justify-content:space-between;align-items:center;width:100%;padding:15px 18px;font-size:16px;text-align:left;border-bottom:1px solid rgba(255,255,255,.18);transition:background .2s}
+.mr:last-child{border-bottom:0}.mr:hover{background:rgba(255,255,255,.12)}
+.rd{width:10px;height:10px;border-radius:50%;background:#ff3b5c;display:inline-block}
+.pc{cursor:pointer}
+#pd{position:fixed;inset:0;z-index:39;overflow-y:auto;background:linear-gradient(180deg,#3d7a7a,#235557 40%,#0c2a2d);transform:translateY(100%);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+#pd.on{transform:none}
+.pdh{display:flex;align-items:center;gap:8px;margin:calc(10px + env(safe-area-inset-top,0px)) auto 0;width:calc(100% - 24px);max-width:560px;padding:7px 8px;border-radius:99px;position:sticky;top:calc(10px + env(safe-area-inset-top,0px));z-index:3}
+.pdt{flex:1;min-width:0;font-size:18px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:4px}
+.dbd{position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;border-radius:10px;background:var(--acc);color:#3a2600;font-size:12px;font-weight:600;display:grid;place-items:center}
+.pdw{max-width:560px;margin:0 auto;padding:12px 12px 16px}
+.gal{position:relative;border-radius:30px;overflow:hidden;background:rgba(255,255,255,.14);border:1px solid var(--line)}
+.sls{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.sls::-webkit-scrollbar{display:none}
+.sl{flex:0 0 100%;scroll-snap-align:center;display:grid;place-items:center;height:290px;font-size:130px;filter:drop-shadow(0 20px 20px rgba(0,25,30,.35))}
+.sl span{display:inline-block}
+.sale{position:absolute;top:14px;left:14px;z-index:2;width:62px;height:62px;border-radius:14px;background:#63b3ff;display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;box-shadow:0 8px 16px rgba(0,25,30,.3)}
+.sale span{transform:rotate(-38deg);display:block}
+.dots{display:flex;justify-content:center;gap:10px;margin:14px 0 4px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35);transition:all .25s}.dots i.on{background:#fff;transform:scale(1.2)}
+.sec{border-radius:26px;padding:16px 18px;margin-top:12px}
+.pdn{font:300 28px/1.15 Outfit;margin:0}.brn{color:var(--acc);font-weight:500;margin-top:10px}.sub{color:var(--mute);margin-top:6px}
+.lnk{color:#8fd0ff;font-weight:500}
+.pbig{font:500 32px Outfit}
+.inf{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.6);color:#0c3a3c;font-size:13px;font-weight:600;cursor:pointer;vertical-align:middle;margin-left:4px}
+.stk{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.stk span{background:rgba(255,255,255,.22);padding:4px 10px;border-radius:8px;font-size:12px;font-weight:500}
+.dl{display:flex;align-items:center;gap:10px;margin-top:14px}
+.rk{width:36px;height:34px;border-radius:9px;background:rgba(80,220,130,.3);display:grid;place-items:center}
+.locb{display:flex;align-items:center;gap:10px;justify-content:space-between;border:1.5px solid var(--line);border-radius:18px;padding:12px 16px;margin-top:14px}
+.locb input{flex:1;min-width:0;background:rgba(5,25,27,.4);border:1px solid var(--line);border-radius:99px;padding:8px 14px;outline:0}
+.lk{color:var(--acc);font-weight:500}
+.mb{display:flex;align-items:center;gap:10px;justify-content:space-between;background:rgba(120,220,255,.18);border-radius:20px;padding:12px 16px;margin-top:12px}
+.pbar{position:sticky;bottom:0;margin:0 auto calc(10px + env(safe-area-inset-bottom,0px));width:calc(100% - 24px);max-width:560px;border-radius:30px;padding:12px 14px 14px;z-index:3}
+.pp{color:var(--mute);margin:0 0 8px 4px}.pp b{color:#fff;font:500 26px Outfit;margin-left:6px}
+.pbr{display:flex;gap:12px}
+.fvb{width:56px;height:56px;border-radius:50%;flex:none;background:rgba(255,255,255,.25);border:1px solid var(--line);font-size:26px;line-height:1;display:grid;place-items:center;color:#fff;transition:transform .2s}
+.fvb.on{background:#fff;color:#e8265a}.fvb:active{transform:scale(1.15)}
+.addg{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;background:#1f8f4e;color:#fff;border-radius:99px;font-weight:500;font-size:17px;transition:transform .15s}.addg:active{transform:scale(.97)}
+.addg svg,.pdh svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.i{width:1.3em;height:1.3em;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.25em;flex:none}
+.i.fill{fill:currentColor}
+.hb .i{width:20px;height:20px}.fvb .i{width:26px;height:26px}
+.ci .i{width:26px;height:26px;color:#0c3a3c}
+.empty .big{width:48px;height:48px;stroke-width:1.2;opacity:.8}
+.rk .i{width:20px;height:20px}.m .i{width:24px;height:24px}
+.bg2 .i{width:64px;height:64px;stroke-width:1.2}
+.mr .i{width:18px;height:18px;opacity:.8}
+.chip .i{width:16px;height:16px}
+.rm .i{width:18px;height:18px}
+.lk,.locb span{display:inline-flex;align-items:center;gap:6px}
+#pfBtn{font-weight:500;font-size:17px;flex:none}#pfBtn.in{background:#fff;color:#0c3a3c}
+@keyframes bump{50%{transform:scale(1.25)}}.bump{animation:bump .35s}
+@media(max-width:560px){.sb{min-width:0}.hero .big{font-size:60px}.hero{padding:22px}}
+/* ===== VELOX PRO DESKTOP POLISH ===== */
+:root{--velox-accent:#00e5a8;--velox-dark:#061e20}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:.08em;text-transform:uppercase}
+.brand b{color:var(--velox-accent)}
+.brand .logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#00e5a8,#00b3ff);display:grid;place-items:center;color:#061e20;font-weight:800;font-size:18px;box-shadow:0 6px 18px rgba(0,229,168,.35)}
+.wrap{max-width:1360px}
+.nav{max-width:1360px;padding:10px 14px 10px 16px;height:62px;backdrop-filter:blur(28px) saturate(1.4)}
+.title{font-weight:800;letter-spacing:-.03em;background:linear-gradient(180deg,#fff 20%,rgba(255,255,255,.55));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:none;text-shadow:none}
+.shop h2{font-weight:600;letter-spacing:-.02em}
+.pg{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px}
+.pc{padding:0;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.12));border:1px solid rgba(255,255,255,.22)}
+.pc h3{padding:0 14px;margin-top:2px;font-weight:500;font-size:16px;letter-spacing:-.01em}
+.pc .old{padding:0 14px;margin-top:6px}
+.pc .price{padding:0 14px}
+.pc .add{margin:12px 12px 12px;padding:12px;background:#0c2a2d;color:#fff;font-weight:600;border:1px solid rgba(255,255,255,.15);transition:all .2s}
+.pc .add:hover{background:#fff;color:#0c2a2d;transform:translateY(-1px)}
+.pic{margin:0;border-radius:0;height:200px;display:flex;align-items:center;justify-content:center;font-size:72px;background:radial-gradient(80% 80% at 50% 30%,rgba(255,255,255,.35),rgba(255,255,255,.06));position:relative}
+.hb{top:12px;right:12px;backdrop-filter:blur(10px)}
+@media(min-width:1024px){
+  .wrap{padding:0 28px}
+  .pg{grid-template-columns:repeat(4,1fr);gap:26px}
+  .pic{height:220px;font-size:80px}
+  .shop{margin-top:56px}
+  .title{font-size:clamp(80px,9vw,140px)!important;margin:32px 0 12px}
+  .hero{padding:36px 40px}
+  .nav{margin-top:20px;height:68px}
+  .sb{max-width:420px;padding:12px 20px;font-size:15px}
+}
+@media(min-width:1440px){
+  .pg{grid-template-columns:repeat(5,1fr)}
+}
+@media(max-width:640px){
+  .pg{grid-template-columns:repeat(2,1fr);gap:14px}
+  .pic{height:150px;font-size:56px}
+}
+</style></head>
+<body>
+<div id="bg"><svg viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true"><path fill="rgba(25,80,82,.55)" d="M0 420 L180 300 L330 380 L520 230 L700 360 L880 260 L1080 380 L1260 290 L1440 360 V600 H0Z"/><path fill="rgba(10,46,48,.8)" d="M0 480 L220 380 L400 460 L640 330 L860 450 L1100 350 L1300 440 L1440 400 V600 H0Z"/><path fill="#071f21" d="M0 540 L300 470 L600 530 L900 480 L1200 530 L1440 500 V600 H0Z"/></svg></div>
+<nav class="nav glass"><button class="round" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span class="brand"><span class="logo-icon">V</span>VELOX</span>
+<input class="sb" id="q" placeholder="Search the collection" aria-label="Search"><button class="round" id="pfBtn" aria-label="Profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button>
+</nav>
+<main class="wrap">
+<h1 class="title">Velox</h1>
+
+<section class="shop"><h2 id="ph">The collection</h2><div class="pg" id="pg"></div></section>
+</main>
+<div id="scrim"></div>
+<nav class="dk glass" id="dk" aria-label="Main">
+<button class="on" data-a="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>Home</button>
+<button data-a="shop"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Shop</button>
+<button data-a="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Search</button>
+<button data-a="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>Favourites</button>
+<button id="cartBtn" data-a="bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>Bag<span id="badge">0</span></button>
+</nav>
+<aside id="topDrawer" class="glass" aria-label="Menu"><div class="dh"><span>Categories</span><button class="chip" id="closeTop">Close</button></div><p class="tdn">Browse by category</p>
+<div class="catl" id="catl"></div></aside>
+<aside id="drawer" class="glass"><div class="dh"><span>Your bag</span><button class="chip" id="closeCart">Close</button></div>
+<div class="items" id="items"></div>
+<div class="tot"><span>Total</span><span id="tot">R 0</span></div><button class="btn" id="checkout">Checkout</button></aside>
+<script>
+const P=[
+{n:"Wireless Headphones",e:"🎧",p:899,o:1299},{n:"Smart Watch",e:"⌚",p:1499,o:1999},
+{n:"Gaming Console",e:"🎮",p:6499,o:7299},{n:"Running Shoes",e:"👟",p:749,o:999},
+{n:"Coffee Machine",e:"☕",p:1899,o:2499},{n:"Backpack",e:"🎒",p:459,o:649},
+{n:"Bluetooth Speaker",e:"🔊",p:599,o:899},{n:"Camera",e:"📷",p:5299,o:6199},
+{n:"Desk Lamp",e:"💡",p:299,o:399},{n:"Sunglasses",e:"🕶️",p:349,o:499},
+{n:"Laptop",e:"💻",p:8999,o:10499},{n:"Book Bundle",e:"📚",p:399,o:549}];
+const IC={
+menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/>',
+pin:'<path d="M12 21s-6-5.3-6-10a6 6 0 0112 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>',
+truck:'<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+bell:'<path d="M6 16v-5a6 6 0 0112 0v5l1.5 2h-15zM10 20a2 2 0 004 0"/>',
+vol:'<path d="M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>',
+close:'<path d="M6 6l12 12M18 6L6 18"/>',
+box:'<path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/>',
+star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+card:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/>',
+bank:'<path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>',
+cash:'<rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="12" cy="12" r="2.5"/>',
+check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+chev:'<path d="M9 5l7 7-7 7"/>',
+back:'<path d="M15 5l-7 7 7 7"/>',
+grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+car:'<path d="M4 16v-4l2-5h12l2 5v4M4 16h16M4 16v2M20 16v2"/><circle cx="8" cy="13" r=".8"/><circle cx="16" cy="13" r=".8"/>',
+baby:'<circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M9.5 15c1.5 1.3 3.5 1.3 5 0M12 4c0-1.5 1.5-2 2.5-1"/>',
+lip:'<path d="M9 21v-8h6v8zM10 13V9l4-5v9"/>',
+book:'<path d="M5 4h10a3 3 0 013 3v13H8a3 3 0 01-3-3zM5 17a3 3 0 013-3h10"/>',
+tent:'<path d="M3 20L12 5l9 15zM12 5v15M9 20l3-6 3 6"/>',
+phone:'<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/>',
+drop:'<path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/>',
+shirt:'<path d="M8 4L3 7l2 4 3-1v10h8V10l3 1 2-4-5-3a4 4 0 01-8 0z"/>',
+laptop:'<rect x="5" y="5" width="14" height="10" rx="1.5"/><path d="M2 19h20"/>',
+tool:'<path d="M14.5 6a4 4 0 005 5L11 19.5a2.1 2.1 0 01-3-3z"/>',
+pad:'<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M15.5 12.5h.01M18 14.5h.01"/>',
+leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14zM5 19l7-7"/>',
+basket:'<path d="M3 10h18l-2 9H5zM8 10l3-6M16 10l-3-6"/>'};
+const ic=(n,c="")=>`<svg class="i ${c}" viewBox="0 0 24 24">${IC[n]}</svg>`;
+const CM={"Wireless Headphones":"Cellphones","Smart Watch":"Cellphones","Gaming Console":"Gaming","Running Shoes":"Clothing, Shoes & Accessories","Coffee Machine":"Groceries","Backpack":"Camping","Bluetooth Speaker":"Cellphones","Camera":"Computers & Laptops","Desk Lamp":"DIY & Home Improvement","Sunglasses":"Clothing, Shoes & Accessories","Laptop":"Computers & Laptops","Book Bundle":"Books"};
+P.forEach(x=>x.c=CM[x.n]);
+P.push({n:"Engine Oil 5L",e:"🛢️",p:549,o:699,c:"Auto"},{n:"Baby Onesie Set",e:"🧸",p:249,o:349,c:"Baby & Toddler"},{n:"Perfume 100ml",e:"💄",p:1199,o:1599,c:"Beauty"},{n:"Camping Chair",e:"⛺",p:399,o:549,c:"Camping"},{n:"Smartphone 128GB",e:"📱",p:3999,o:4799,c:"Cellphones"},{n:"Repair Face Serum",e:"🧴",p:429,o:559,c:"Derma Skincare"},{n:"Summer Dress",e:"👗",p:279,o:399,c:"Clothing, Shoes & Accessories"},{n:"Cordless Drill",e:"🔧",p:899,o:1199,c:"DIY & Home Improvement"},{n:"Kettle Braai",e:"🔥",p:1299,o:1699,c:"Garden, Pool & Patio"},{n:"Pantry Hamper",e:"🥫",p:349,o:449,c:"Groceries"});
+const CATS=[["All products","grid"],["Auto","car"],["Baby & Toddler","baby"],["Beauty","lip"],["Books","book"],["Camping","tent"],["Cellphones","phone"],["Derma Skincare","drop"],["Clothing, Shoes & Accessories","shirt"],["Computers & Laptops","laptop"],["DIY & Home Improvement","tool"],["Gaming","pad"],["Garden, Pool & Patio","leaf"],["Groceries","basket"]];
+document.getElementById("catl").innerHTML=CATS.map(([n,e],i)=>`<button class="catr${i?"":" on"}" data-k="${i?n.replace(/&/g,"&amp;"):"all"}"><span class="ci">${ic(e)}</span>${n.replace(/&/g,"&amp;")}</button>`).join("");
+let cart=[],busy=Promise.resolve(),uid=0,fav=new Set(),showFav=false;
+const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const R=n=>"R "+n.toLocaleString("en-ZA");
+function grid(f=""){const l=P.map((x,i)=>({x,i})).filter(({x,i})=>(x.n+" "+x.c).toLowerCase().includes(f)&&(!showFav||fav.has(i)));
+ $("#ph").textContent=showFav?"Favourites":"The collection";$("#pg").innerHTML=l.length?l.map(({x,i})=>`<div class="pc glass"><div class="pic"><button class="hb${fav.has(i)?" on":""}" data-f="${i}" aria-label="Favourite">${ic("heart",fav.has(i)?"fill":"")}</button>${x.e}</div><h3>${x.n}</h3><div class="old">${R(x.o)}</div><div class="price">${R(x.p)}</div><button class="add" data-i="${i}">Add to bag</button></div>`).join(""):'<div class="none">'+(showFav?"No favourites yet. Tap the heart on a product to save it.":"Nothing found.")+'</div>'}
+grid();
+$("#q").oninput=e=>grid(e.target.value.toLowerCase());
+$("#pg").onclick=e=>{const b=e.target.closest(".add");if(b)busy=busy.then(()=>pack(P[b.dataset.i]))};
+async function pack(prod){
+ const ov=document.createElement("div");ov.className="ov";
+ ov.innerHTML=`<div class="boxw"><div class="it">${prod.e}</div><div class="body"><div class="tape"></div><div class="lbl">VELOX</div></div><div class="fl l"></div><div class="fl r"></div></div>`;
+ document.body.appendChild(ov);const bw=ov.firstChild;
+ bw.animate([{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}],{duration:300,easing:"cubic-bezier(.3,1.5,.5,1)"});
+ await sleep(350);
+ await bw.querySelector(".it").animate([{transform:"translateY(-130px) rotate(-15deg)"},{transform:"translateY(26px) rotate(0)"}],{duration:550,easing:"ease-in",fill:"forwards"}).finished;
+ bw.classList.add("closed");await sleep(450);
+ bw.classList.add("sealed");await sleep(450);
+ const a=bw.getBoundingClientRect(),c=($("#dcart")&&$("#pd.on")?$("#dcart"):$("#cartBtn")).getBoundingClientRect();
+ const dx=c.left+c.width/2-(a.left+a.width/2),dy=c.top+c.height/2-(a.top+a.height/2);
+ ov.animate([{opacity:1},{opacity:0}],{duration:650,fill:"forwards"});
+ await bw.animate([{transform:"translate(0,0) scale(1)"},{transform:"translate(0,-40px) scale(1.1)",offset:.25},{transform:`translate(${dx}px,${dy}px) scale(.15)`,opacity:.6}],{duration:650,easing:"ease-in-out"}).finished;
+ ov.remove();cart.push({id:++uid,...prod});render();
+ const b=$("#cartBtn");b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump");
+}
+function render(){$("#items").innerHTML=cart.length?cart.map(x=>`<div class="row"><div class="mini"><span>${x.e}</span></div><div class="t"><b>${x.n}</b><small>${R(x.p)}</small></div><button class="rm" data-id="${x.id}">${ic("close")}</button></div>`).join(""):'<div class="empty"><div class="big">${ic("box")}</div><p>Your bag is empty.</p></div>';
+ $("#tot").textContent=R(cart.reduce((s,x)=>s+x.p,0));$("#badge").textContent=cart.length;$("#checkout").disabled=!cart.length}
+const open=v=>{$("#drawer").classList.toggle("on",v);$("#scrim").classList.toggle("on",v)};
+$("#cartBtn").onclick=()=>open(true);$("#closeCart").onclick=$("#scrim").onclick=()=>open(false);
+const tp=v=>{$("#topDrawer").classList.toggle("on",v);$("#scrim").classList.toggle("on",v)};
+$("#menuBtn").onclick=()=>tp(true);$("#closeTop").onclick=()=>tp(false);
+$("#scrim").onclick=()=>{open(false);tp(false)};
+$("#topDrawer").onclick=e=>{const b=e.target.closest("[data-k]");if(!b)return;const k=b.dataset.k;
+ document.querySelectorAll("#topDrawer [data-k]").forEach(x=>x.classList.toggle("on",x==b));
+ $("#q").value=k=="all"?"":k;grid(k=="all"?"":k.toLowerCase());tp(false);setTimeout(()=>$("#pg").scrollIntoView({behavior:"smooth"}),250)};
+$("#items").onclick=e=>{const b=e.target.closest(".rm");if(b){cart=cart.filter(x=>x.id!=b.dataset.id);render()}};
+$("#checkout").onclick=async()=>{await busy;open(false);payment([...cart])};
+const tabs=[...document.querySelectorAll("#dk button")],setOn=a=>tabs.forEach(b=>b.classList.toggle("on",b.dataset.a==a));
+$("#dk").onclick=e=>{const b=e.target.closest("button");if(!b)return;const a=b.dataset.a;
+ if(a=="home")scrollTo({top:0,behavior:"smooth"});
+ if(a=="shop")$("#pg").scrollIntoView({behavior:"smooth"});
+ if(a=="search"){scrollTo({top:0,behavior:"smooth"});$("#q").focus()}
+ if(a=="bag")open(true);
+ if(a!="bag")setOn(a)};
+addEventListener("scroll",()=>{if(!$("#q").matches(":focus")&&!showFav)setOn($("#pg").getBoundingClientRect().top<innerHeight*.6?"shop":"home")},{passive:true});
+let orders=0,user=null;
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ICON='<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+function face(){const b=$('#pfBtn');b.classList.toggle('in',!!user);b.innerHTML=user?esc(user.n[0].toUpperCase()):ICON}
+const updFav=()=>{const v=document.querySelector('#dk [data-a="fav"] svg');if(v)v.style.fill=fav.size?"currentColor":"none"};
+$("#pg").addEventListener("click",e=>{const h=e.target.closest(".hb");if(!h)return;const i=+h.dataset.f;fav.has(i)?fav.delete(i):fav.add(i);grid($("#q").value.toLowerCase());updFav()});
+$("#dk").addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.dataset.a=="bag")return;const was=showFav;showFav=b.dataset.a=="fav";
+ if(showFav||was){$("#q").value="";grid("")}
+ if(showFav)$("#ph").scrollIntoView({behavior:"smooth"})});
+let orderLog=[],addr="",more=false,view=null,dot=true,pref={n:true,s:true};
+const G1=["Orders","Returns","Invoices","Address Book","Velox MORE","Product Reviews","Coupons & Offers","Credit & Refunds"],G2=["Account Settings","App Settings","Help"];
+const row=n=>`<button class="mr" data-v="${esc(n)}"><span>${esc(n)}</span>${n=="App Settings"&&dot?'<i class="rd"></i>':ic("chev")}</button>`;
+const DET={
+ "Orders":()=>orderLog.length?orderLog.map(o=>`<div class="sum"><div><b>${o.id}</b><b>${R(o.g)}</b></div><div><span>${esc(o.items.join(", "))}</span></div></div>`).join(""):`<p class="note">No orders yet. Complete a checkout and it will show here.</p>`,
+ "Returns":()=>`<p class="note">You have no returns. Items can be returned within 30 days of delivery.</p>`,
+ "Invoices":()=>orderLog.length?orderLog.map(o=>`<div class="sum"><div><span>Invoice for ${o.id}</span><span>${R(o.g)}</span></div></div>`).join(""):`<p class="note">Invoices appear here after you place an order.</p>`,
+ "Address Book":()=>`<div class="fld"><input id="ad" placeholder="Street, suburb, city, postal code" value="${esc(addr)}"></div><button class="btn" data-do="addr">Save address</button>`,
+ "Velox MORE":()=>`<div class="sum"><div><span>Status</span><b>${more?"Active":"Not joined"}</b></div><div><span>Perk</span><span>Free delivery on every order</span></div></div><button class="btn" data-do="more">${more?"Cancel membership":"Join Velox MORE"}</button>`,
+ "Product Reviews":()=>{const n=[...new Set(orderLog.flatMap(o=>o.items))];return n.length?n.map(x=>`<div class="sum"><div><span>${esc(x)}</span><span>Ready to review</span></div></div>`).join(""):`<p class="note">Products you have bought will show here so you can review them.</p>`},
+ "Coupons & Offers":()=>`<div class="sum"><div><b>WELCOME10</b><span>R100 off over R1 000</span></div></div><div class="sum"><div><b>SPRING25</b><span>Free gift on R2 500+</span></div></div><div class="note">Demo coupons.</div>`,
+ "Credit & Refunds":()=>`<div class="sum"><div><span>Store credit</span><b>R 0</b></div><div><span>Pending refunds</span><span>None</span></div></div>`,
+ "Account Settings":()=>`<div class="fld"><input id="an" value="${esc(user.n)}" placeholder="Name"><input id="ae" type="email" value="${esc(user.e)}" placeholder="Email"></div><button class="btn" data-do="acct">Save changes</button>`,
+ "App Settings":()=>`<div class="m ${pref.n?"sel":""}" data-tg="n">${ic("bell")} Push notifications<b style="margin-left:auto;font-weight:400">${pref.n?"On":"Off"}</b></div><div class="m ${pref.s?"sel":""}" data-tg="s">${ic("vol")} Sounds<b style="margin-left:auto;font-weight:400">${pref.s?"On":"Off"}</b></div>`,
+ "Help":()=>`<div class="sum"><div><span>Delivery</span><span>2–5 business days</span></div><div><span>Returns</span><span>30 days</span></div><div><span>Email</span><span>help@velox.demo</span></div></div>`};
+$("#pfBtn").onclick=()=>{
+ view=null;const m=document.createElement("div");m.className="modal";
+ const draw=()=>{m.innerHTML=!user?`<div class="pay glass"><h2>Welcome back</h2><p class="tdn" style="margin:0 0 6px">Sign in to see your account.</p><div class="fld"><input id="pn" placeholder="Your name"><input id="pe" type="email" placeholder="Email address"></div><button class="btn" id="si">Sign in</button><div class="note">Demo only – nothing is saved.</div><button class="chip" id="cx" style="display:block;margin:12px auto 0">Close</button></div>`
+ :view?`<div class="pay glass"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"><button class="chip" data-do="back">${ic("back")} Back</button><span style="font-size:20px">${esc(view)}</span><span style="width:72px"></span></div>${DET[view]()}</div>`
+ :`<div class="pay glass"><div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div class="ci" style="width:58px;height:58px;font-size:24px;font-weight:500;color:#0c3a3c">${esc(user.n[0].toUpperCase())}</div><div style="min-width:0"><div style="font-size:20px">${esc(user.n)}</div><div class="note" style="margin:0;text-align:left">${esc(user.e)}</div></div></div><div class="mg">${G1.map(row).join("")}</div><div class="mg">${G2.map(row).join("")}</div><button class="btn" data-do="out">Sign out</button><button class="chip" id="cx" style="display:block;margin:12px auto 0">Close</button></div>`};
+ draw();document.body.appendChild(m);
+ m.onclick=e=>{const t=e.target,v=t.closest("[data-v]"),d=t.closest("[data-do]"),tg=t.closest("[data-tg]"),id=t.id;
+  if(t===m||id=="cx")return m.remove();
+  if(v){view=v.dataset.v;if(view=="App Settings")dot=false;return draw()}
+  if(tg){pref[tg.dataset.tg]=!pref[tg.dataset.tg];return draw()}
+  if(d){const a=d.dataset.do;
+   if(a=="back")view=null;
+   if(a=="addr"){addr=m.querySelector("#ad").value.trim();view=null}
+   if(a=="more")more=!more;
+   if(a=="acct"){const n=m.querySelector("#an").value.trim(),em=m.querySelector("#ae").value.trim();if(n)user.n=n;if(em)user.e=em;face();view=null}
+   if(a=="out"){user=null;view=null;face()}
+   return draw()}
+  if(id=="si"){const n=m.querySelector("#pn").value.trim()||"Guest",em=m.querySelector("#pe").value.trim()||"guest@velox.demo";user={n,e:em};face();draw()}};
+};
+let loc="",locEdit=false;
+$("#pg").addEventListener("click",e=>{if(e.target.closest(".add,.hb"))return;const c=e.target.closest(".pc");if(c)openItem(+c.querySelector(".add").dataset.i)});
+function openItem(i){
+ const x=P[i],pct=Math.round((1-x.p/x.o)*100),rt=(4.2+((i*7)%8)/10).toFixed(1),rv=8+(i*13)%90;
+ let pd=$("#pd");if(!pd){pd=document.createElement("div");pd.id="pd";document.body.appendChild(pd)}
+ const sl=[`<div class="sl">${x.e}</div>`,`<div class="sl"><span style="transform:rotate(-14deg) scale(1.1)">${x.e}</span></div>`,`<div class="sl"><span style="transform:scale(1.7)">${x.e}</span></div>`,`<div class="sl" style="font-size:88px">${x.e} ${ic("box")}</div>`,`<div class="sl" style="display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:96px"><span>${x.e}</span><b style="font:200 40px Outfit">-${pct}% today</b></div>`].join("");
+ pd.innerHTML=`<div class="pdh glass"><button class="round" data-act="back" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span class="pdt">${esc(x.n)}</span><button class="round" id="dcart" data-act="cart" aria-label="Bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg><span class="dbd" id="dbadge">${cart.length}</span></button><button class="round" data-act="share" aria-label="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button></div>
+<div class="pdw"><div class="gal"><div class="sale"><span>SALE</span></div><div class="sls">${sl}</div></div>
+<div class="dots"><i class="on"></i><i></i><i></i></div>
+<div class="sec glass"><h1 class="pdn">${esc(x.n)}</h1><div class="brn">Velox</div><div class="sub">${esc(x.c)}</div></div>
+<div class="sec glass"><span style="color:#ffb81f;font-size:20px">${ic("star","fill")}</span> <b style="font-size:18px;font-weight:500">${rt}</b> &nbsp; <span class="lnk">${rv} Reviews</span></div>
+<div class="sec glass"><div><span class="pbig">${R(x.p)}</span> <s class="old" style="font-size:18px">${R(x.o)}</s> <span class="inf" data-act="info">i</span></div>
+<div id="inote" class="note" style="display:none;text-align:left">You save ${R(x.o-x.p)} (${pct}% off). Prices include VAT.</div>
+<div class="stk">In stock <span>CPT</span><span>DBN</span><span>JHB</span></div>
+<div class="dl"><span class="rk">${ic("truck")}</span><span>Get it Today, 1pm - 7pm</span></div>
+<div class="locb" id="dloc"></div><div class="mb" id="dmore"></div></div></div>
+<div class="pbar glass"><div class="pp">Price: <b>${R(x.p)}</b></div><div class="pbr"><button class="fvb${fav.has(i)?" on":""}" id="dfav" data-act="fav" aria-label="Favourite">${ic("heart",fav.has(i)?"fill":"")}</button><button class="addg" data-act="add"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11h10l2-8H7"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/><path d="M12 2v5M9.5 4.5h5"/></svg>Add to Cart</button></div></div>`;
+ const drawLoc=()=>{$("#dloc").innerHTML=locEdit?`<input id="li" placeholder="Suburb or city" value="${esc(loc)}"><button class="lk" data-act="locsave">Save</button>`:loc?`<span>${ic("pin")} ${esc(loc)}</span><button class="lk" data-act="loc">Change</button>`:`<span>${ic("pin")} Set your location</span><button class="lk" data-act="loc">Add</button>`};
+ const drawMore=()=>{$("#dmore").innerHTML=`<span>FREE Same Day with <b>Velox MORE</b></span><button class="chip" data-act="join">${more?"Joined ✓":"Join"}</button>`};
+ locEdit=false;drawLoc();drawMore();
+ const sls=pd.querySelector(".sls"),dots=[...pd.querySelectorAll(".dots i")];
+ sls.onscroll=()=>{const n=Math.round(sls.scrollLeft/sls.clientWidth);dots.forEach((d,j)=>d.classList.toggle("on",j==n))};
+ pd.onclick=e=>{const a=e.target.closest("[data-act]");if(!a)return;const k=a.dataset.act;
+  if(k=="back"){pd.classList.remove("on");document.body.style.overflow=""}
+  if(k=="cart")open(true);
+  if(k=="share"){try{navigator.share&&navigator.share({title:x.n,text:x.n+" – "+R(x.p)+" on Velox",url:location.href}).catch(()=>{})}catch(_){}}
+  if(k=="fav"){fav.has(i)?fav.delete(i):fav.add(i);const f=$("#dfav");f.innerHTML=ic("heart",fav.has(i)?"fill":"");f.classList.toggle("on",fav.has(i));grid($("#q").value.toLowerCase());updFav()}
+  if(k=="add")busy=busy.then(()=>pack(x));
+  if(k=="info"){const n=$("#inote");n.style.display=n.style.display=="none"?"block":"none"}
+  if(k=="loc"){locEdit=true;drawLoc()}
+  if(k=="locsave"){const v=$("#li").value.trim();if(v)loc=v;locEdit=false;drawLoc()}
+  if(k=="join"){more=!more;drawMore()}};
+ pd.scrollTop=0;document.body.style.overflow="hidden";
+ requestAnimationFrame(()=>requestAnimationFrame(()=>pd.classList.add("on")));
+}
+function payment(items){
+ const t=items.reduce((s,x)=>s+x.p,0),ship=(t>=500||more)?0:60,g=t+ship;
+ const m=document.createElement("div");m.className="modal";
+ const methods=[["card",ic("card"),"Credit / Debit Card"],["eft",ic("bank"),"Instant EFT"],["cod",ic("cash"),"Pay on Delivery"]];
+ let sel="card";
+ const draw=()=>{m.innerHTML=`<div class="pay glass"><h2>Choose payment method</h2>
+ <div class="sum">${items.length} packed item${items.length>1?"s":""}
+ <div><span>Subtotal</span><span>${R(t)}</span></div><div><span>Delivery</span><span>${ship?R(ship):"FREE"}</span></div>
+ <div><b>Total</b><b>${R(g)}</b></div></div>
+ ${methods.map(([k,i,l])=>`<div class="m ${sel==k?"sel":""}" data-k="${k}"><span style="font-size:22px">${i}</span>${l}</div>`).join("")}
+ ${sel=="card"?`<div class="fld"><input placeholder="Card number" inputmode="numeric"><input placeholder="Name on card"><div style="display:flex;gap:8px"><input placeholder="MM/YY"><input placeholder="CVV"></div></div>`:""}
+ <button class="btn" id="go">Pay ${R(g)}</button><div class="note">Demo store – no real payment is taken.</div><button class="chip" id="cx" style="display:block;margin:12px auto 0">Back to shop</button></div>`};
+ draw();document.body.appendChild(m);
+ m.onclick=e=>{const k=e.target.closest(".m");if(k){sel=k.dataset.k;draw()}
+  if(e.target.id=="cx")m.remove();
+  if(e.target.id=="go"){orderLog.unshift({id:"VLX"+(1001+orderLog.length),items:items.map(x=>x.n),g});cart=[];orders++;render();m.innerHTML=`<div class="pay glass ok"><div class="bg2">${ic("check")}</div><h2>Order confirmed!</h2><p>Your packages are on their way.</p><button class="btn" id="done">Keep shopping</button></div>`}
+  if(e.target.id=="done")m.remove()};
+}
+</script></body></html>
